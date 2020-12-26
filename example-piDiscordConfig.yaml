@@ -1,0 +1,6 @@
+discord:
+  clientToken: YOUR_DISCORD_TOKEN
+  msgChannelId: DISCORD_CHANNEL_ID
+gmail:
+  credFile: credentials.json
+  videoLabelName: videoCamNotifications
