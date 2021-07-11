@@ -373,7 +373,7 @@ choreLabelSendingChannel = getLabelSendingChannel('choreLabel', loadedConfig)
 
 # Discord client initialization
 client = MyClient()
-if len(videoLabelId):
+if len(videoLabelId) and len(choreLabelId):
     client.videoLabelId = videoLabelId
     client.videoLabelSendingChannel = videoLabelSendingChannel
     client.choreLabelId = choreLabelId
