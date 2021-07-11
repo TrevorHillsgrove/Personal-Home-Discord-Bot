@@ -282,13 +282,14 @@ async def sendGmailAsDiscord(labelId, discordClient, gmailService, loadedConfig,
             print('exception sendGmailAsDiscord')
             continue
 
-async def sendGmailSubjectAsDiscord(labelId, discordClient, gmailService, loadedConfig):
+async def sendGmailSubjectAsDiscord(labelId, discordClient, gmailService, loadedConfig, channelToSendTo):
     """Main function to convert all unread Gmail emails under a certain label (defined in configs) to a discord message (specifically, the email subject)
     Args:
       labelId: Gmail label id
       discordClient: Discord client
       gmailService: Gmail service
       loadedConfig: configuration from yaml file
+      channelToSendTo: channel id to send message to
     Returns:
       Void, Sends email subject line content as a Discord message
     """
@@ -302,7 +303,7 @@ async def sendGmailSubjectAsDiscord(labelId, discordClient, gmailService, loaded
         try:
             emailData = gmailService.users().messages().get(userId='me', id=email['id']).execute()
 
-            await sendSubjectLineFromEmail(emailData, discordClient, loadedConfig)
+            await sendSubjectLineFromEmail(emailData, discordClient, loadedConfig, channelToSendTo)
 
             labelToRemove = {
                 "removeLabelIds": [
@@ -333,7 +334,7 @@ class MyClient(discord.Client):
     async def on_ready(self):
         """On_Ready function, when the discord bot is up and running
 
-        Args:
+        Args:sendGmailAsDiscord
           self: self
         Returns:
           Void, logs a success message
