@@ -187,6 +187,7 @@ async def sendSubjectLineFromEmail(emailData, discordClient, loadedConfig, chann
 
     for header in emailData['payload']['headers']:
         if header['name'] == 'Subject':
+            discordChannel = discordClient.get_channel(channelToSendTo)
             await discordChannel.send(header['value'])
 
 def getGmailLabel(gmailService, loadedConfig, labelKeyName):
