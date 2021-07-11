@@ -237,8 +237,8 @@ def getLabelSendingChannel(labelName, loadedConfig):
     """
 
     channelToSendTo = loadedConfig['discord']['msgChannelId']
-    if 'msgChannelOverride' in loadedConfig['discord']['gmail'][labelName]:
-        channelToSendTo = loadedConfig['discord']['gmail'][labelName]['msgChannelOverride']
+    if 'msgChannelOverride' in loadedConfig['gmail'][labelName]:
+        channelToSendTo = loadedConfig['gmail'][labelName]['msgChannelOverride']
     
     return channelToSendTo
 
