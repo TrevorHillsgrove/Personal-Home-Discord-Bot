@@ -226,7 +226,7 @@ def getGmailLabel(gmailService, loadedConfig, labelKeyName):
                 break
     return labelId
 
-async def getLabelSendingChannel(labelName, loadedConfig):
+def getLabelSendingChannel(labelName, loadedConfig):
     """Gets the channel for sending a message to, from a given labelName and the loaded config
 
     Args:
