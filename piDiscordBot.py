@@ -380,9 +380,9 @@ loadedConfig = yaml.safe_load(open("./piDiscordConfig.yaml"))
 # Gmail initialization
 gmailService = gmailInitialize(loadedConfig)
 videoLabelId = getGmailLabel(gmailService, loadedConfig, 'videoLabel')
-videoLabelSendingChannel = getLabelSendingChannel('videoLabel, loadedConfig')
+videoLabelSendingChannel = getLabelSendingChannel('videoLabel', loadedConfig)
 choreLabelId = getGmailLabel(gmailService, loadedConfig, 'choreLabel')
-choreLabelSendingChannel = getLabelSendingChannel('choreLabel', 'loadedConfig')
+choreLabelSendingChannel = getLabelSendingChannel('choreLabel', loadedConfig)
 
 # Discord client initialization
 client = MyClient()
