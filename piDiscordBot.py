@@ -185,24 +185,9 @@ async def sendSubjectLineFromEmail(emailData, discordClient, loadedConfig, chann
       Void, uploads text from subject line of an email to Discord
     """
 
-    for part in emailData['payload']['parts']:
-        if part['mimeType'] == 'text/plain':
-            base64text = part['body']['data']
-            # https://gist.github.com/perrygeo/ee7c65bb1541ff6ac770
-            # apparently there's no padding in certain cases, so we need to add it in
-            # we can add arbitrary padding length in, it'll ignore the rest of it.
-            toDecode = base64text + '======================='
-
-            messageText = ''
-            try:
-                # Parse body text
-                messageText = base64.b64decode(toDecode).decode('utf-8')
-            except:
-                e = sys.exc_info()[1]
-                print(e)
-
-            discordChannel = discordClient.get_channel(channelToSendTo)
-            await discordChannel.send(messageText)
+    for header in emailData['payload']['headers']:
+        if header['name'] == 'Subject':
+            await discordChannel.send(header['value'])
 
 def getGmailLabel(gmailService, loadedConfig, labelKeyName):
     """Gets a Gmail label id, given the gmail service and string value defined in the config
