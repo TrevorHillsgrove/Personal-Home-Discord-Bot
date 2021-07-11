@@ -3,6 +3,8 @@ discord:
   msgChannelId: DISCORD_CHANNEL_ID
 gmail:
   credFile: credentials.json
-  videoLabelName: videoCamNotifications
-  choreLabelName: googleCalendarChores
+  videoLabel:
+    name: videoCamNotifications
+  choreLabel:
+    name: googleCalendarChores
     msgChannelOverride: DISCORD_CHANNEL_ID

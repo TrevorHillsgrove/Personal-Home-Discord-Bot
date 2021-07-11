@@ -221,7 +221,7 @@ def getGmailLabel(gmailService, loadedConfig, labelKeyName):
     if labels:
         labelId = ''
         for label in labels:
-            if label['name'] == loadedConfig['gmail'][labelKeyName]:
+            if label['name'] == loadedConfig['gmail'][labelKeyName]['name']:
                 labelId = label['id']
                 break
     return labelId
@@ -379,10 +379,10 @@ loadedConfig = yaml.safe_load(open("./piDiscordConfig.yaml"))
 
 # Gmail initialization
 gmailService = gmailInitialize(loadedConfig)
-videoLabelId = getGmailLabel(gmailService, loadedConfig, 'videoLabelName')
-videoLabelSendingChannel = getLabelSendingChannel('videoLabelName, loadedConfig')
-choreLabelId = getGmailLabel(gmailService, loadedConfig, 'choreLabelName')
-choreLabelSendingChannel = getLabelSendingChannel('choreLabelName', 'loadedConfig')
+videoLabelId = getGmailLabel(gmailService, loadedConfig, 'videoLabel')
+videoLabelSendingChannel = getLabelSendingChannel('videoLabel, loadedConfig')
+choreLabelId = getGmailLabel(gmailService, loadedConfig, 'choreLabel')
+choreLabelSendingChannel = getLabelSendingChannel('choreLabel', 'loadedConfig')
 
 # Discord client initialization
 client = MyClient()
