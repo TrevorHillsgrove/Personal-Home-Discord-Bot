@@ -7,4 +7,4 @@ gmail:
     - name: videoCamNotifications
   choreLabel:
     - name: googleCalendarChores
-    msgChannelOverride: DISCORD_CHANNEL_ID
+      msgChannelOverride: DISCORD_CHANNEL_ID
