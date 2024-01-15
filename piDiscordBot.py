@@ -372,21 +372,26 @@ choreLabelId = getGmailLabel(gmailService, loadedConfig, 'choreLabel')
 choreLabelSendingChannel = getLabelSendingChannel('choreLabel', loadedConfig)
 
 # Discord client initialization
-client = MyClient()
-if len(videoLabelId) and len(choreLabelId):
-    client.videoLabelId = videoLabelId
-    client.videoLabelSendingChannel = videoLabelSendingChannel
-    client.choreLabelId = choreLabelId
-    client.choreLabelSendingChannel = choreLabelSendingChannel
-    client.gmailService = gmailService
-    client.loadedConfig = loadedConfig
+client = MyClient(intents=discord.Intents.default())
 
-    # Start checking every 5 minutes to send Gmail camera emails as discord messages
-    # Added into the discord client event loop
-    client.loop.create_task(do_stuff_every_x_seconds(300, sendGmailAsDiscord, videoLabelId, client, gmailService, loadedConfig, videoLabelSendingChannel))
-    # Start checking every 5 minutes to send Gmail chore notification emails as discord messages
-    # Added into the discord client event loop
-    client.loop.create_task(do_stuff_every_x_seconds(300, sendGmailSubjectAsDiscord, choreLabelId, client, gmailService, loadedConfig, choreLabelSendingChannel))
+async def main():
+    async with client:
+        if len(videoLabelId) and len(choreLabelId):
+          client.videoLabelId = videoLabelId
+          client.videoLabelSendingChannel = videoLabelSendingChannel
+          client.choreLabelId = choreLabelId
+          client.choreLabelSendingChannel = choreLabelSendingChannel
+          client.gmailService = gmailService
+          client.loadedConfig = loadedConfig
 
-# Starting the discord bot
-client.run(loadedConfig['discord']['clientToken'])
+          # Start checking every 5 minutes to send Gmail camera emails as discord messages
+          # Added into the discord client event loop
+          client.loop.create_task(do_stuff_every_x_seconds(300, sendGmailAsDiscord, videoLabelId, client, gmailService, loadedConfig, videoLabelSendingChannel))
+          # Start checking every 5 minutes to send Gmail chore notification emails as discord messages
+          # Added into the discord client event loop
+          client.loop.create_task(do_stuff_every_x_seconds(300, sendGmailSubjectAsDiscord, choreLabelId, client, gmailService, loadedConfig, choreLabelSendingChannel))
+
+        # Starting the discord bot
+        await client.start(loadedConfig['discord']['clientToken'])
+
+asyncio.run(main())
