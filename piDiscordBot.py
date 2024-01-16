@@ -138,6 +138,7 @@ async def uploadPhotosFromDownloaded(discordClient, loadedConfig, channelToSendT
     imagesToUpload = [f for f in listdir(filePath) if isfile(join(filePath, f))]
     for fileVal in imagesToUpload:
         await discordChannel.send(file=discord.File(filePath + '/' + fileVal))
+        await asyncio.sleep(1)
         remove(filePath + '/' + fileVal)
 
 async def sendTextFromEmail(emailData, discordClient, loadedConfig, channelToSendTo):
