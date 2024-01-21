@@ -373,7 +373,7 @@ choreLabelId = getGmailLabel(gmailService, loadedConfig, 'choreLabel')
 choreLabelSendingChannel = getLabelSendingChannel('choreLabel', loadedConfig)
 
 # Discord client initialization
-client = MyClient(intents=discord.Intents.default())
+client = MyClient(intents=discord.Intents.all())
 
 async def main():
     async with client:
