@@ -388,6 +388,9 @@ async def main():
           # Start checking every 5 minutes to send Gmail camera emails as discord messages
           # Added into the discord client event loop
           client.loop.create_task(do_stuff_every_x_seconds(300, sendGmailAsDiscord, videoLabelId, client, gmailService, loadedConfig, videoLabelSendingChannel))
+
+          await asyncio.sleep(60)
+
           # Start checking every 5 minutes to send Gmail chore notification emails as discord messages
           # Added into the discord client event loop
           client.loop.create_task(do_stuff_every_x_seconds(300, sendGmailSubjectAsDiscord, choreLabelId, client, gmailService, loadedConfig, choreLabelSendingChannel))
