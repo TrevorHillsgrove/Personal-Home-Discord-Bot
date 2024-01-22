@@ -8,6 +8,9 @@
 #
 # pip3 install pyyaml
 # (For yaml config loading)
+#
+# pip3 install wakeonlan
+# (For wake-on-lan functionality)
 
 # Discord dependencies
 import discord
@@ -21,6 +24,9 @@ from google.auth.transport.requests import Request
 
 # Async dependencies
 import asyncio
+
+# wol dependencies
+from wakeonlan import send_magic_packet
 
 # General dependencies
 import time
@@ -309,6 +315,27 @@ async def sendGmailSubjectAsDiscord(labelId, discordClient, gmailService, loaded
             print('exception sendGmailSubjectAsDiscord')
             continue
 
+def sendWolPacket(wolComputerName, loadedConfig):
+    """Sends a WOL packet to a valid computer name in the discord config yaml
+    Args:
+      wolComputerName: valid computername in the config yaml
+      loadedConfig: loaded discord config yaml
+    Returns:
+      Void, Sends a WOL packet
+    """
+
+    if wolComputerName not in loadedConfig['wol']:
+        print('Invalid computer name')
+        return
+
+    print('Sending WOL packet to ' + wolComputerName)
+
+    try:
+        send_magic_packet(loadedConfig['wol'][wolComputerName])
+    except Exception as e:
+        print(e)
+        print('exception sendWolPacket')
+
 # Discord client class
 class MyClient(discord.Client):
     videoLabelId = None
@@ -345,6 +372,9 @@ class MyClient(discord.Client):
             await sendGmailAsDiscord(videoLabelId, self, gmailService, loadedConfig, videoLabelSendingChannel)
             await sendGmailSubjectAsDiscord(choreLabelId, self, gmailService, loadedConfig, choreLabelSendingChannel)
             print('Check Email Manually triggered')
+        if message.content.startswith('!wol'):
+            wolComputer = message.content.removeprefix('!wol ')
+            sendWolPacket(wolComputer, loadedConfig)
 
 # Generic helper functions
 async def do_stuff_every_x_seconds(timeout, stuff, *args):
