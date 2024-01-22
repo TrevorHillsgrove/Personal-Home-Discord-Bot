@@ -8,3 +8,5 @@ gmail:
   choreLabel:
     name: googleCalendarChores
     msgChannelOverride: DISCORD_CHANNEL_ID
+wol:
+  computername: XX:XX:XX:XX:XX:XX
