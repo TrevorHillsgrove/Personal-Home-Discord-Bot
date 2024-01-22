@@ -10,3 +10,8 @@ gmail:
     msgChannelOverride: DISCORD_CHANNEL_ID
 wol:
   computername: XX:XX:XX:XX:XX:XX
+webhook:
+  computerwebhookname:
+    ip: 111.111.1.11
+    command: some-webhook
+    auth: someauthkey
