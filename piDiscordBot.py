@@ -28,6 +28,9 @@ import asyncio
 # wol dependencies
 from wakeonlan import send_magic_packet
 
+# webhook dependencies
+import requests
+
 # General dependencies
 import time
 from datetime import date
@@ -318,14 +321,14 @@ async def sendGmailSubjectAsDiscord(labelId, discordClient, gmailService, loaded
 def sendWolPacket(wolComputerName, loadedConfig):
     """Sends a WOL packet to a valid computer name in the discord config yaml
     Args:
-      wolComputerName: valid computername in the config yaml
+      wolComputerName: valid computername for wol in the config yaml
       loadedConfig: loaded discord config yaml
     Returns:
       Void, Sends a WOL packet
     """
 
     if wolComputerName not in loadedConfig['wol']:
-        print('Invalid computer name')
+        print('Invalid computer name for WOL')
         return
 
     print('Sending WOL packet to ' + wolComputerName)
@@ -335,6 +338,34 @@ def sendWolPacket(wolComputerName, loadedConfig):
     except Exception as e:
         print(e)
         print('exception sendWolPacket')
+
+def sendLocalWebhookGET(webhookName, loadedConfig):
+    """Sends a GET request to a valid local webhook in the discord config yaml
+    Args:
+      webhookName: valid computername for a webhook in the config yaml
+      loadedConfig: loaded discord config yaml
+    Returns:
+      Void, Sends a webhook request
+    """
+
+    if webhookName not in loadedConfig['webhook']:
+        print('Invalid computer name for webhook')
+        return
+
+    print('Sending webhook to ' + webhookName)
+
+    try:
+        ipAddress = loadedConfig['webhook'][webhookName]['ip']
+        command = loadedConfig['webhook'][webhookName]['command']
+        auth = loadedConfig['webhook'][webhookName]['auth']
+
+        url = 'http://' + ipAddress + ':9000/hooks/' + command
+        headers = {'X-Webhook-Auth': auth}
+
+        requests.get(url, headers=headers)
+    except Exception as e:
+        print(e)
+        print('exception sendLocalWebhookGET')
 
 # Discord client class
 class MyClient(discord.Client):
@@ -375,6 +406,9 @@ class MyClient(discord.Client):
         if message.content.startswith('!wol'):
             wolComputer = message.content.removeprefix('!wol ')
             sendWolPacket(wolComputer, loadedConfig)
+        if message.content.startswith('!webhook'):
+            webhookComputer = message.content.removeprefix('!webhook ')
+            sendLocalWebhookGET(webhookComputer, loadedConfig)
 
 # Generic helper functions
 async def do_stuff_every_x_seconds(timeout, stuff, *args):
